@@ -24,9 +24,9 @@ function Homepage() {
   }, [history]);
 
   return (
-    <Container maxW="xl" centerContent >
+    <Container maxW="xl" centerContent  >
       <Box
-        d="flex"
+        display="flex"
         justifyContent="center"
         p={3}
         bg="#D33771"
@@ -34,18 +34,18 @@ function Homepage() {
         m="40px 0 15px 0"
         borderRadius="lg"
         borderWidth="1px"
-      
+        color="pink"
 
         >
 
         
-        <Text fontSize="4xl" fontFamily="Work sans" display="center" >
+        <Text fontSize="5xl" fontFamily="Work sans" textAlign="center" >
                Chatopia
         </Text>
       </Box>
       <Box bg="white" w="100%" p={4} borderRadius="lg" borderWidth="1px">
-        <Tabs isFitted variant="soft-rounded">
-          <TabList mb="1em"  >
+        <Tabs isFitted variant="soft-rounded"  >
+          <TabList mb="1em"   >
             <Tab >Login</Tab>
             <Tab>Sign Up</Tab>
           </TabList>
