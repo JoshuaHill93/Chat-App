@@ -12,7 +12,7 @@ import { getSender } from "../config/ChatLogics";
 import GroupChatModal from "./miscellaneous/GroupChatModal";
 
 
-const MyChats = () => {
+const MyChats = ({fetchAgain}) => {
  const [loggedUser, setLoggedUser] = useState();
  const { selectedChat, setSelectedChat, user, chats, setChats } = ChatState();
 
@@ -46,7 +46,7 @@ useEffect(() => {
   setLoggedUser(JSON.parse(localStorage.getItem("userInfo")));
   fetchChats();
   // eslint-disable-next-line
-}, []);
+}, [fetchAgain]);
 
   return ( <Box
   d={{ base: selectedChat ? "none" : "flex", md: "flex" }}
@@ -59,8 +59,8 @@ useEffect(() => {
   borderWidth="1px"
 >
 <Box
-  pb={0}
-  px={1}
+  pb={3}
+  px={3}
   fontSize={{ base: "28px", md: "30px" }}
   fontFamily="Work sans"
   display="flex"
@@ -83,7 +83,7 @@ useEffect(() => {
 <Box 
   display="flex"
   flexDir="column"
-  p={2}
+  p={9}
   bg="#F8F8F8"
   w="100%"
   h="90%"
