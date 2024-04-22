@@ -108,7 +108,7 @@ const SideDrawer = () => {
   return (
      <>
   <Box
-  d="flex"
+  display="flex"
   justifyContent="space-between"
   alignItems="center"
   bg="white"

@@ -12,7 +12,6 @@ import { useEffect } from "react";
 import { useHistory } from "react-router";
 import Login from "../components/Authentication/Login";
 import Signup from "../components/Authentication/Signup";
-//import { Button, ButtonGroup } from '@chakra-ui/react'
 
 function Homepage() {
   const history = useHistory();
@@ -24,33 +23,28 @@ function Homepage() {
   }, [history]);
 
   return (
-    <Container maxW="xl" centerContent  >
+    <Container maxW="xl" centerContent>
       <Box
-        display="flex"
+        d="flex"
         justifyContent="center"
         p={3}
-        bg="#D33771"
+        bg="white"
         w="100%"
         m="40px 0 15px 0"
         borderRadius="lg"
         borderWidth="1px"
-        color="pink"
-
-        >
-
-        
-        <Text fontSize="5xl" fontFamily="Work sans" textAlign="center" >
-               Chatopia
+      >
+        <Text fontSize="4xl" fontFamily="Work sans">
+          Chatopia
         </Text>
       </Box>
       <Box bg="white" w="100%" p={4} borderRadius="lg" borderWidth="1px">
-        <Tabs isFitted variant="soft-rounded"  >
-          <TabList mb="1em"   >
-            <Tab >Login</Tab>
+        <Tabs isFitted variant="soft-rounded">
+          <TabList mb="1em">
+            <Tab>Login</Tab>
             <Tab>Sign Up</Tab>
           </TabList>
-          <TabPanels >
-          
+          <TabPanels>
             <TabPanel>
               <Login />
             </TabPanel>

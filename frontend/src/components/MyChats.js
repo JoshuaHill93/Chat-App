@@ -9,7 +9,7 @@ import { Button } from "@chakra-ui/react";
 import { AddIcon } from "@chakra-ui/icons";
 import ChatLoading from "./ChatLoading";
 import { getSender } from "../config/ChatLogics";
-
+import GroupChatModal from "./miscellaneous/GroupChatModal";
 
 
 const MyChats = () => {
@@ -19,7 +19,7 @@ const MyChats = () => {
  const toast = useToast();
 
  const fetchChats = async () => {
-   //console.log(user._id);
+   console.log(user._id);
   try {
     const config = {
       headers: {
@@ -59,8 +59,8 @@ useEffect(() => {
   borderWidth="1px"
 >
 <Box
-  pb={500}
-  px={3}
+  pb={0}
+  px={1}
   fontSize={{ base: "28px", md: "30px" }}
   fontFamily="Work sans"
   display="flex"
@@ -69,27 +69,29 @@ useEffect(() => {
   alignItems="center"
 >
   My Chats
-  
+      <GroupChatModal>
       <Button
             display="flex"
             fontSize={{ base: "17px", md: "10px", lg: "17px" }}
             rightIcon={<AddIcon />}
+            
           >
             New Group Chat
           </Button>
+          </GroupChatModal>
        </Box>
 <Box 
   display="flex"
   flexDir="column"
-  p={3}
+  p={2}
   bg="#F8F8F8"
   w="100%"
-  h="100%"
+  h="90%"
   borderRadius="lg"
   overflowY="hidden"
       >
       {chats ? (
-          <Stack overFlowY="scroll">
+          <Stack overflowy="scroll">
               {chats.map((chat) => (
                 <Box
                 onClick={() => setSelectedChat(chat)}
