@@ -7,7 +7,7 @@ const { notFound, errorHandler } = require("./middleware/errorMiddleware");
 const cors = require("cors");
 const path = require('path')
 require('dotenv').config({path:path.resolve(__dirname,'./.env')})
-
+const messageRoutes = require("./routes/messageRoutes");
 
 
 //dotenv.config();
@@ -22,7 +22,8 @@ app.get("/",(req,res) => {
 });
 
 app.use("/api/user", userRoutes);
-app.use("/api/chat",chatRoutes)
+app.use("/api/chat",chatRoutes);
+app.use("/api/message", messageRoutes);
 
 app.use(notFound);
 app.use(errorHandler);
