@@ -5,10 +5,14 @@ import { ArrowBackIcon } from "@chakra-ui/icons";
 import UpdateGroupChatModal from "./miscellaneous/UpdateGroupChatModal";
 import { getSender, getSenderFull } from "../config/ChatLogics";
 import ProfileModal from "./miscellaneous/ProfileModal";
-import { useState,  } from "react";
+import { useState, useEffect } from "react";
 import { FormControl, IconButton, Spinner, Input, useToast} from "@chakra-ui/react";
 import axios from "axios";
 import ScrollableChat from "./ScrollableChat";
+
+import io from "socket.io-client";
+const ENDPOINT = "http://localhost:5000";
+var socket, selectedChatCompare;
 
 
 
@@ -16,6 +20,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [newMessage, setNewMessage] = useState();
+  const [socketConnected, setSocketConnected] = useState(false);
 
 const toast = useToast();
   const { user, selectedChat, setSelectedChat } = ChatState();
@@ -42,6 +47,7 @@ const toast = useToast();
         console.log(messages);
         setMessages(data);
         setLoading(false);
+        socket.emit("join chat", selectedChat._id);
     } catch (error) {
         toast({
             title: "Error Occured!",
@@ -54,15 +60,25 @@ const toast = useToast();
     }
 };
 
-// useEffect(() => {
-//     fetchMessages();
-// }, [selectedChat]);
+useEffect(() => {
+    fetchMessages();
+    selectedChatCompare = selectedChat;
+}, [selectedChat]);
 
   const typingHandler = (e) => {
     setNewMessage(e.target.value);
 
         // typing indicator logic
   };
+
+
+  useEffect(() => {
+    socket = io(ENDPOINT);
+    socket.emit("setup", user);
+    socket.on("connection",() => setSocketConnected(true));
+  }, []);
+
+
 
 
 

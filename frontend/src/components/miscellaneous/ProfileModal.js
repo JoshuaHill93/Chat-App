@@ -53,4 +53,4 @@ return (
 </>
 );
 }
-export default ProfileModal
+export default ProfileModal;
