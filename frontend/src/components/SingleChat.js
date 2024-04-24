@@ -21,19 +21,22 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   const [loading, setLoading] = useState(false);
   const [newMessage, setNewMessage] = useState();
   const [socketConnected, setSocketConnected] = useState(false);
-  
+  const [typing, setTyping] = useState(false);
+  const [isTyping, setIsTyping] = useState(false);
 
 
 
-
-  
-  const toast = useToast();
+const toast = useToast();
   const { user, selectedChat, setSelectedChat } = ChatState();
   
   useEffect(() => {
     socket = io(ENDPOINT);
     socket.emit("setup", user);
-    socket.on("connection",() => setSocketConnected(true));
+    socket.on("connected",() => setSocketConnected(true));
+    socket.on("typing", () => setIsTyping(true));
+    socket.on("stop typing", () => setIsTyping(false));
+
+
   }, []);
 
   const fetchMessages = async () => {
@@ -91,6 +94,24 @@ useEffect(() => {
     setNewMessage(e.target.value);
 
         // typing indicator logic
+        if (!socketConnected) return;
+
+        if(!typing){
+          setTyping(true);
+          socket.emit("typing", selectedChat._id)
+        }
+        let  lastTypingTime = new Date().getTime();
+        var timerLength = 3000;
+        setTimeout(() => {
+          var timeNow = new Date().getTime();
+          var timeDiff = timeNow - lastTypingTime;
+
+          if(timeDiff >= timerLength && typing){
+            socket.emit("stop typing", selectedChat._id);
+            setTyping(false)
+          }
+        }, timerLength);
+
   };
 
 
@@ -102,6 +123,7 @@ useEffect(() => {
 
   const sendMessage = async (event) => {
     if(event.key==="Enter" && newMessage) {
+      socket.emit("stop typing", selectedChat._id)
         try {
             const config = {
                 headers: {
@@ -203,13 +225,14 @@ useEffect(() => {
             )}
 
             <FormControl onKeyDown={sendMessage} isRequired mt={1} bg="white" >
+                    {isTyping ? <div>Loading...</div> : <></>}
                     <Input
                     variant="filled"
                     bg="white"
                     placeholder="Enter a message.."
                    
-                    value={newMessage}
                     onChange={typingHandler}
+                    value={newMessage}
                     />
             </FormControl>
           </Box>
