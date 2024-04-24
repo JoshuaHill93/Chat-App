@@ -21,10 +21,20 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   const [loading, setLoading] = useState(false);
   const [newMessage, setNewMessage] = useState();
   const [socketConnected, setSocketConnected] = useState(false);
+  
 
-const toast = useToast();
+
+
+
+  
+  const toast = useToast();
   const { user, selectedChat, setSelectedChat } = ChatState();
-
+  
+  useEffect(() => {
+    socket = io(ENDPOINT);
+    socket.emit("setup", user);
+    socket.on("connection",() => setSocketConnected(true));
+  }, []);
 
   const fetchMessages = async () => {
     if(!selectedChat) return;
@@ -65,6 +75,18 @@ useEffect(() => {
     selectedChatCompare = selectedChat;
 }, [selectedChat]);
 
+useEffect(() => {
+    socket.on("message recieved", (newMessageRecieved) => {
+      if (!selectedChatCompare  || selectedChatCompare._id !== newMessageRecieved.chat._id){
+        // give notification
+      } else {
+        setMessages([...messages, newMessageRecieved]);
+      }
+    });
+});
+
+
+
   const typingHandler = (e) => {
     setNewMessage(e.target.value);
 
@@ -72,11 +94,6 @@ useEffect(() => {
   };
 
 
-  useEffect(() => {
-    socket = io(ENDPOINT);
-    socket.emit("setup", user);
-    socket.on("connection",() => setSocketConnected(true));
-  }, []);
 
 
 
@@ -103,6 +120,8 @@ useEffect(() => {
 
         console.log(data);
 
+
+            socket.emit("new message", data);
             setMessages([...messages,data]);
         } catch (error) {
             toast({
@@ -114,8 +133,8 @@ useEffect(() => {
                 postions: "bottom",
             });
             
-        }
-    }
+        };
+    };
   };
 
 
