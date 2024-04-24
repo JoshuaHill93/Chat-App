@@ -41,7 +41,7 @@ const toast = useToast();
 
   const fetchMessages = async () => {
     if(!selectedChat) return;
-     
+
 
     try {
         const config = {
@@ -57,7 +57,7 @@ const toast = useToast();
             `/api/message/${selectedChat._id}`,
         config);
 
-        console.log(messages);
+        
         setMessages(data);
         setLoading(false);
         socket.emit("join chat", selectedChat._id);
@@ -114,14 +114,7 @@ useEffect(() => {
 
   };
 
-
-
-
-
-
-
-
-  const sendMessage = async (event) => {
+const sendMessage = async (event) => {
     if(event.key==="Enter" && newMessage) {
       socket.emit("stop typing", selectedChat._id)
         try {
@@ -141,9 +134,7 @@ useEffect(() => {
         );
 
         console.log(data);
-
-
-            socket.emit("new message", data);
+        socket.emit("new message", data);
             setMessages([...messages,data]);
         } catch (error) {
             toast({
@@ -159,11 +150,7 @@ useEffect(() => {
     };
   };
 
-
-
-
-
-  return (
+return (
     <>
       {selectedChat ? (
         <>
@@ -220,9 +207,8 @@ useEffect(() => {
             ) : (
               <div className="messages">
                 <ScrollableChat messages={messages} />
-                 
-                 </div>
-            )}
+                  </div>
+            )},
 
             <FormControl onKeyDown={sendMessage} isRequired mt={1} bg="white" >
                     {isTyping ? <div>Loading...</div> : <></>}
@@ -230,7 +216,6 @@ useEffect(() => {
                     variant="filled"
                     bg="white"
                     placeholder="Enter a message.."
-                   
                     onChange={typingHandler}
                     value={newMessage}
                     />
@@ -248,7 +233,7 @@ useEffect(() => {
             Click on a user to start chatting
           </Text>
         </Box>
-      )}
+      )},
     </>
   );
 };
